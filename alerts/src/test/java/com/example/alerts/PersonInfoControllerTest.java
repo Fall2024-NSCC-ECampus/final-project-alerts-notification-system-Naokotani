@@ -2,6 +2,7 @@ package com.example.alerts;
 
 import com.example.alerts.model.*;
 import com.example.alerts.repository.PersonRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -68,11 +69,12 @@ public class PersonInfoControllerTest {
     }
 
     /**
-     * Makes sure the db is empty adn then saved the entity.
+     * This method runs before each test. It deletes teh db and then saves the person.
+     * This way the db is always in a state read for use before the test/s run.
      * @throws IllegalAccessError It sure does, idk why it would buy it does!
      */
-    @Test
-    void createPerson() throws IllegalAccessError {
+    @BeforeEach
+    void setup() throws IllegalAccessError {
         personRepository.deleteAll();
         personRepository.save(person);
     }
@@ -109,13 +111,5 @@ public class PersonInfoControllerTest {
 
                 // Allergies
                 .andExpect(jsonPath("$[0].allergy[0].name").value(allergy.getName()));
-    }
-
-    /**
-     * Clears the db for the next test. possibly redundant.
-     */
-    @Test
-    void deleteAllPersons() {
-        personRepository.deleteAll();
     }
 }
