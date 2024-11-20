@@ -23,9 +23,9 @@ public class Person {
     private String email;
     private String phone;
     private int age;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     private FireStation fireStation;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     private Address address;
     @OneToMany(cascade = CascadeType.ALL)
     private Set<Allergy> allergy = new HashSet<>();
