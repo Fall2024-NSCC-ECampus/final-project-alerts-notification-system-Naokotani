@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-
 /**
  * This will return the email addresses of all people in the city
  * For all of these endpoints, the results should be JSON, and if there is an address or fire station number not

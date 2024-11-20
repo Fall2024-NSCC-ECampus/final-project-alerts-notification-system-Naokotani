@@ -27,14 +27,11 @@ import java.util.List;
 public class ChildAlertController {
 
     private final PersonRepository personRepository;
-    private final FireStationRepository fireStationRepository;
     private final AddressRepository addressRepository;
 
     public ChildAlertController(PersonRepository personRepository,
-                                FireStationRepository fireStationRepository,
                                 AddressRepository addressRepository) {
         this.personRepository = personRepository;
-        this.fireStationRepository = fireStationRepository;
         this.addressRepository = addressRepository;
     }
 
