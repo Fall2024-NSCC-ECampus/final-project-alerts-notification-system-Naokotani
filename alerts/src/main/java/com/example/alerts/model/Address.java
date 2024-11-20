@@ -25,4 +25,13 @@ public class Address {
     private String postalCode;
     @OneToMany
     private Set<Person> person = new HashSet<>();
+
+    @Override
+    public String toString() {
+        return streetNumber + ' ' +
+                street + ' ' +
+                city + ", " +
+                province + ", " +
+                postalCode;
+    }
 }

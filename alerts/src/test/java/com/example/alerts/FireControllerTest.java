@@ -12,17 +12,18 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class PersonInfoControllerTest {
+public class FireControllerTest {
     @Autowired
     MockMvc mockMvc;
     @Autowired
@@ -41,7 +42,7 @@ public class PersonInfoControllerTest {
     /**
      * Creates all the entities needed for the test
      */
-    public PersonInfoControllerTest() {
+    public FireControllerTest() {
         fireStation.setCommunity("Post Hastings");
 
         // Set allergies
@@ -91,39 +92,12 @@ public class PersonInfoControllerTest {
         personRepository.save(person);
     }
 
-    /**
-     * Test to make sure the api can return a findAll.
-     * @throws Exception Not sure. Maybe if there is an exception in the controller?
-     */
-    @Test
-    void personControllerTest() throws Exception {
-        ResultActions result = mockMvc.perform(get("/personInfo/test"));
-        result.andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
 
-                //Personal info
-                .andExpect(jsonPath("$[0].firstName").value(person.getFirstName()))
-                .andExpect(jsonPath("$[0].lastName").value(person.getLastName()))
-                .andExpect(jsonPath("$[0].email").value(person.getEmail()))
-                .andExpect(jsonPath("$[0].phone").value(person.getPhone()))
-
-                // Address
-                .andExpect(jsonPath("$[0].address.street").value(address.getStreet()))
-                .andExpect(jsonPath("$[0].address.city").value(address.getCity()))
-                .andExpect(jsonPath("$[0].address.province").value(address.getProvince()))
-                .andExpect(jsonPath("$[0].address.postalCode").value(address.getPostalCode()))
-                .andExpect(jsonPath("$[0].address.streetNumber").value(address.getStreetNumber()))
-
-                // Fire Station
-                .andExpect(jsonPath("$[0].fireStation.community").value(fireStation.getCommunity()))
-
-                // Medications
-                .andExpect(jsonPath("$[0].medication[0].name").value(medication.getName()))
-                .andExpect(jsonPath("$[0].medication[0].dosage").value(medication.getDosage()))
-
-                // Allergies
-                .andExpect(jsonPath("$[0].allergy[0].name").value(allergy.getName()));
-    }
+/*
+ * This URL should return the fire station number that services the provided address as well as a list of all of
+ * the people living at the address. This list should include each person’s name, phone number, age,
+ * medications with dosage, and allergies.
+ */
 
     /**
      * Test the actual api path.
@@ -134,16 +108,20 @@ public class PersonInfoControllerTest {
         List<FireStation> fireStations = fireStationRepository.findAll();
         ResultActions result;
         if(!fireStations.isEmpty()){
-            result = mockMvc.perform(get(String.format("/personInfo?stationNumber=%s", fireStations.getFirst().getId())));
+            result = mockMvc.perform(get("/fire", address.getCity())
+                    .param("streetNumber", address.getStreetNumber())
+                    .param("street", address.getStreet())
+                    .param("city", address.getCity())
+                    .param("province", address.getProvince())
+                    .param("postalCode", address.getPostalCode()));
             result.andExpect(status().isOk())
-                    .andExpect(jsonPath("$.people[0].firstName").value(person.getFirstName()))
-                    .andExpect(jsonPath("$.people[0].lastName").value(person.getLastName()))
-                    .andExpect(jsonPath("$.people[0].phone").value(person.getPhone()))
-                    .andExpect(jsonPath("$.people[0].fullAddress").value(address.getStreetNumber() + " " +
-                            address.getStreet() + " " + address.getCity() + ", " + address.getProvince() + ", "
-                            + address.getPostalCode()))
-                    .andExpect(jsonPath("$.numberOfChildren").value(0))
-                    .andExpect(jsonPath("$.numberOfAdults").value(1));
+                    .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+                    .andExpect(jsonPath("$[0].fullName").value(person.getFirstName()
+                            + " " + person.getLastName()))
+                    .andExpect(jsonPath("$[0].phoneNumber").value(person.getPhone()))
+                    .andExpect(jsonPath("$[0].age").value(person.getAge()))
+                    .andExpect(jsonPath("$[0].medications[0].name").value(medication.getName()))
+                    .andExpect(jsonPath("$[0].allergies[0].name").value(allergy.getName()));
         }
     }
 }

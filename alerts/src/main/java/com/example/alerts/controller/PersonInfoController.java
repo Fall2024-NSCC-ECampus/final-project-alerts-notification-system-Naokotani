@@ -1,5 +1,8 @@
 package com.example.alerts.controller;
 
+import com.example.alerts.dto.person_info.PersonInfoDto;
+import com.example.alerts.dto.person_info.PersonInfoPersonDto;
+import com.example.alerts.mapper.PersonInfoMapper;
 import com.example.alerts.model.Person;
 import com.example.alerts.repository.FireStationRepository;
 import com.example.alerts.repository.PersonRepository;
@@ -39,16 +42,21 @@ public class PersonInfoController {
         return new ResponseEntity<>(people, HttpStatus.OK);
     }
 
-    // TODO add summer of peoples ages. Request mapper? Add this to the doc string when done.
-    // TODO this is returning too much info. Create DTO to isolate correct info
+    // TODO Refactor to service
     /**
      * Returns the list of people serviced by a fire station.
      * @param stationNumber The id of the fire station to return a list of people for.
      * @return A list of {@link Person}
      */
     @GetMapping()
-    public ResponseEntity<List<Person>> getPeopleByFireStation(@RequestParam Long stationNumber) {
+    public ResponseEntity<PersonInfoDto> getPeopleByFireStation(@RequestParam Long stationNumber) {
         List<Person> people = personRepository.findPersonByFireStationId(stationNumber);
-        return new ResponseEntity<>(people, HttpStatus.OK);
+        long adults = people.stream().filter(p -> p.getAge() >= 18).count();
+        long children = people.stream().filter(p -> p.getAge() < 18).count();
+        List<PersonInfoPersonDto> personInfoPersonDto = people.stream()
+                .map(p -> PersonInfoMapper.INSTANCE.personToPersonAddressDto(p, p.getAddress().toString())).toList();
+        PersonInfoDto personInfoDto
+                = PersonInfoMapper.INSTANCE.peopleToPersonInfoDto(personInfoPersonDto, children, adults);
+        return new ResponseEntity<>(personInfoDto, HttpStatus.OK);
     }
 }

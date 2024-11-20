@@ -17,12 +17,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class PersonInfoControllerTest {
+public class CommunityEmailControllerTest {
     @Autowired
     MockMvc mockMvc;
     @Autowired
@@ -41,7 +41,7 @@ public class PersonInfoControllerTest {
     /**
      * Creates all the entities needed for the test
      */
-    public PersonInfoControllerTest() {
+    public CommunityEmailControllerTest() {
         fireStation.setCommunity("Post Hastings");
 
         // Set allergies
@@ -92,40 +92,6 @@ public class PersonInfoControllerTest {
     }
 
     /**
-     * Test to make sure the api can return a findAll.
-     * @throws Exception Not sure. Maybe if there is an exception in the controller?
-     */
-    @Test
-    void personControllerTest() throws Exception {
-        ResultActions result = mockMvc.perform(get("/personInfo/test"));
-        result.andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-
-                //Personal info
-                .andExpect(jsonPath("$[0].firstName").value(person.getFirstName()))
-                .andExpect(jsonPath("$[0].lastName").value(person.getLastName()))
-                .andExpect(jsonPath("$[0].email").value(person.getEmail()))
-                .andExpect(jsonPath("$[0].phone").value(person.getPhone()))
-
-                // Address
-                .andExpect(jsonPath("$[0].address.street").value(address.getStreet()))
-                .andExpect(jsonPath("$[0].address.city").value(address.getCity()))
-                .andExpect(jsonPath("$[0].address.province").value(address.getProvince()))
-                .andExpect(jsonPath("$[0].address.postalCode").value(address.getPostalCode()))
-                .andExpect(jsonPath("$[0].address.streetNumber").value(address.getStreetNumber()))
-
-                // Fire Station
-                .andExpect(jsonPath("$[0].fireStation.community").value(fireStation.getCommunity()))
-
-                // Medications
-                .andExpect(jsonPath("$[0].medication[0].name").value(medication.getName()))
-                .andExpect(jsonPath("$[0].medication[0].dosage").value(medication.getDosage()))
-
-                // Allergies
-                .andExpect(jsonPath("$[0].allergy[0].name").value(allergy.getName()));
-    }
-
-    /**
      * Test the actual api path.
      * @throws Exception throws database exceptions
      */
@@ -134,16 +100,9 @@ public class PersonInfoControllerTest {
         List<FireStation> fireStations = fireStationRepository.findAll();
         ResultActions result;
         if(!fireStations.isEmpty()){
-            result = mockMvc.perform(get(String.format("/personInfo?stationNumber=%s", fireStations.getFirst().getId())));
-            result.andExpect(status().isOk())
-                    .andExpect(jsonPath("$.people[0].firstName").value(person.getFirstName()))
-                    .andExpect(jsonPath("$.people[0].lastName").value(person.getLastName()))
-                    .andExpect(jsonPath("$.people[0].phone").value(person.getPhone()))
-                    .andExpect(jsonPath("$.people[0].fullAddress").value(address.getStreetNumber() + " " +
-                            address.getStreet() + " " + address.getCity() + ", " + address.getProvince() + ", "
-                            + address.getPostalCode()))
-                    .andExpect(jsonPath("$.numberOfChildren").value(0))
-                    .andExpect(jsonPath("$.numberOfAdults").value(1));
+            result = mockMvc.perform(get(String.format("/communityEmail?city=%s", address.getCity())));
+            result.andExpect(status().isOk()).andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+                    .andExpect(jsonPath("$[0].email").value(person.getEmail()));
         }
     }
 }

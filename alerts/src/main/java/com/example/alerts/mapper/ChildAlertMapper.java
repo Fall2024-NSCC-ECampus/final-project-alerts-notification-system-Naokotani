@@ -1,5 +1,7 @@
-package com.example.alerts.dto;
+package com.example.alerts.mapper;
 
+import com.example.alerts.dto.child_alert.ChildAlertDto;
+import com.example.alerts.dto.child_alert.ChildAlertPersonDto;
 import com.example.alerts.model.Person;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;
@@ -11,6 +13,6 @@ import java.util.List;
 public interface ChildAlertMapper {
     ChildAlertMapper INSTANCE = Mappers.getMapper( ChildAlertMapper.class );
 
-    PersonDto personToPersonDto(Person person);
+    ChildAlertPersonDto personToPersonDto(Person person);
     ChildAlertDto personsToChildAlertDto(List<Person> children, List<Person> adults);
 }

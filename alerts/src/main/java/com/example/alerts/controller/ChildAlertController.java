@@ -1,7 +1,7 @@
 package com.example.alerts.controller;
 
-import com.example.alerts.dto.ChildAlertDto;
-import com.example.alerts.dto.ChildAlertMapper;
+import com.example.alerts.dto.child_alert.ChildAlertDto;
+import com.example.alerts.mapper.ChildAlertMapper;
 import com.example.alerts.model.Address;
 import com.example.alerts.model.Person;
 import com.example.alerts.repository.AddressRepository;
@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * This URL should return a list of children (anyone under the age of 18) at that address. The list should
