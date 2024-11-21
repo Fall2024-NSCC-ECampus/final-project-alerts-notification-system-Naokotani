@@ -23,12 +23,16 @@ public class Person {
     private String email;
     private String phone;
     private int age;
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     private FireStation fireStation;
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     private Address address;
     @OneToMany(cascade = CascadeType.ALL)
     private Set<Allergy> allergy = new HashSet<>();
     @OneToMany(cascade = CascadeType.ALL)
     private Set<Medication> medication = new HashSet<>();
+
+    public String getFullName(){
+        return firstName + " " + lastName;
+    }
 }

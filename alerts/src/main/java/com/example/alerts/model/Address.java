@@ -23,7 +23,7 @@ public class Address {
     private String city;
     private String province;
     private String postalCode;
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private Set<Person> person = new HashSet<>();
 
     @Override
