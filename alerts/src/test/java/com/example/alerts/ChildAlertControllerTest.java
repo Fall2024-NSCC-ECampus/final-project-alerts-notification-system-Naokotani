@@ -181,6 +181,19 @@ public class ChildAlertControllerTest {
     }
 
     @Test
+    void addressNotFound() throws Exception {
+        ResultActions result;
+        result = mockMvc.perform(MockMvcRequestBuilders.get("/childAlert")
+                .param("streetNumber", address2.getStreetNumber())
+                .param("street", "mistake lane")
+                .param("city", address2.getCity())
+                .param("province", address2.getProvince())
+                .param("postalCode", address2.getPostalCode()));
+        result.andExpect(status().isNotFound());
+
+    }
+
+    @Test
     void addressNotFoundChildAlertController() throws Exception {
         ResultActions result;
         result = mockMvc.perform(MockMvcRequestBuilders.get("/childAlert")

@@ -11,8 +11,6 @@ import java.util.List;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface ChildAlertMapper {
-    ChildAlertMapper INSTANCE = Mappers.getMapper( ChildAlertMapper.class );
-
     ChildAlertPersonDto personToPersonDto(Person person);
     ChildAlertDto personsToChildAlertDto(List<Person> children, List<Person> adults);
 }

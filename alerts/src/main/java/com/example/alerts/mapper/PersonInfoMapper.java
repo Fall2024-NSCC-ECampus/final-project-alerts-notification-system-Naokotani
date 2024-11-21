@@ -11,6 +11,7 @@ import java.util.List;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface PersonInfoMapper {
+    //TODO Remoev and do the bean way
     PersonInfoMapper INSTANCE = Mappers.getMapper(PersonInfoMapper.class);
 
     PersonInfoPersonDto personToPersonAddressDto(Person person, String fullAddress);

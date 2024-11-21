@@ -1,12 +1,14 @@
 package com.example.alerts.controller;
 
 import com.example.alerts.dto.child_alert.ChildAlertDto;
+import com.example.alerts.exception.ResourceNotFound;
 import com.example.alerts.mapper.ChildAlertMapper;
 import com.example.alerts.model.Address;
 import com.example.alerts.model.Person;
 import com.example.alerts.repository.AddressRepository;
 import com.example.alerts.repository.FireStationRepository;
 import com.example.alerts.repository.PersonRepository;
+import com.example.alerts.service.ChildAlertService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,14 +27,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/childAlert")
 public class ChildAlertController {
-
     private final PersonRepository personRepository;
-    private final AddressRepository addressRepository;
+    private final ChildAlertService childAlertService;
 
     public ChildAlertController(PersonRepository personRepository,
-                                AddressRepository addressRepository) {
+                                 ChildAlertService childAlertService) {
         this.personRepository = personRepository;
-        this.addressRepository = addressRepository;
+        this.childAlertService = childAlertService;
     }
 
     @GetMapping("/test")
@@ -41,7 +42,16 @@ public class ChildAlertController {
         return new ResponseEntity<>(people, HttpStatus.OK);
     }
 
-    // TODO mostly working, move to service.
+    /**
+     * Finds people by address and returns a breakdown of adults and children at address
+     * @param streetNumber street number of the address
+     * @param street street name of address
+     * @param city city of address
+     * @param province province of address
+     * @param postalCode postal code of address
+     * @return {@link ChildAlertDto} built from result of db query.
+     * @throws ResourceNotFound throws if no matching address found.
+     */
     @GetMapping
     public ResponseEntity<ChildAlertDto> getChildAlert(
             @RequestParam String streetNumber,
@@ -49,29 +59,9 @@ public class ChildAlertController {
             @RequestParam String city,
             @RequestParam String province,
             @RequestParam String postalCode
-    ) {
-        Address address = addressRepository
-                .findAddressBystreetNumberAndStreetAndCityAndProvinceAndPostalCode(
-                        streetNumber,
-                        street,
-                        city,
-                        province,
-                        postalCode );
-        if(address == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        List<Person> people = personRepository.findPersonByAddress(address);
-        List<Person> adults = new ArrayList<>();
-        List<Person> children = new ArrayList<>();
-        for (Person person : people) {
-            if(person.getAge() < 18) {
-                children.add(person);
-            } else {
-                adults.add(person);
-            }
-        }
-        ChildAlertDto childAlertDto = ChildAlertMapper.INSTANCE.personsToChildAlertDto(children, adults);
-
-        return new ResponseEntity<>(childAlertDto, HttpStatus.OK);
+    ) throws ResourceNotFound {
+        return new ResponseEntity<>(childAlertService.getChildAlert(streetNumber,
+                street, city, province, postalCode),
+                HttpStatus.OK);
     }
 }

@@ -22,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class PersonInfoControllerTest {
+public class StationControllerTest {
     @Autowired
     MockMvc mockMvc;
     @Autowired
@@ -41,7 +41,7 @@ public class PersonInfoControllerTest {
     /**
      * Creates all the entities needed for the test
      */
-    public PersonInfoControllerTest() {
+    public StationControllerTest() {
         fireStation.setCommunity("Post Hastings");
 
         // Set allergies
@@ -97,7 +97,7 @@ public class PersonInfoControllerTest {
      */
     @Test
     void personControllerTest() throws Exception {
-        ResultActions result = mockMvc.perform(get("/personInfo/test"));
+        ResultActions result = mockMvc.perform(get("/firestation/test"));
         result.andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
 
@@ -134,7 +134,7 @@ public class PersonInfoControllerTest {
         List<FireStation> fireStations = fireStationRepository.findAll();
         ResultActions result;
         if(!fireStations.isEmpty()){
-            result = mockMvc.perform(get(String.format("/personInfo?stationNumber=%s", fireStations.getFirst().getId())));
+            result = mockMvc.perform(get(String.format("/firestation?stationNumber=%s", fireStations.getFirst().getId())));
             result.andExpect(status().isOk())
                     .andExpect(jsonPath("$.people[0].firstName").value(person.getFirstName()))
                     .andExpect(jsonPath("$.people[0].lastName").value(person.getLastName()))

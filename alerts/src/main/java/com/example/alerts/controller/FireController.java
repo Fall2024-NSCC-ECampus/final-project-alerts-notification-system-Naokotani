@@ -1,6 +1,7 @@
 package com.example.alerts.controller;
 
 import com.example.alerts.dto.fire.FireDto;
+import com.example.alerts.exception.ResourceNotFound;
 import com.example.alerts.mapper.FireMapper;
 import com.example.alerts.model.Address;
 import com.example.alerts.model.Person;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -39,10 +41,11 @@ public class FireController {
             @RequestParam String city,
             @RequestParam String province,
             @RequestParam String postalCode
-    ) {
+    ) throws ResourceNotFound {
         Address address
                 = addressRepository.findAddressBystreetNumberAndStreetAndCityAndProvinceAndPostalCode(
-                        streetNumber, street, city, province, postalCode);
+                        streetNumber, street, city, province, postalCode)
+                .orElseThrow(() -> new ResourceNotFound("Address not found"));
         List<Person> people = personRepository.findPersonByAddress(address);
         List<FireDto> fireDtos =
                 people.stream().map(p -> FireMapper.INSTANCE.personToFireDto(p,

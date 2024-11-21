@@ -26,6 +26,7 @@ public class Address {
     @OneToMany(fetch = FetchType.EAGER)
     private Set<Person> person = new HashSet<>();
 
+    // TODO this is a bit of a hack.
     @Override
     public String toString() {
         return streetNumber + ' ' +

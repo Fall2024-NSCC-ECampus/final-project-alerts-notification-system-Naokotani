@@ -14,9 +14,9 @@ import java.util.List;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface PhoneAlertMapper {
+    // TODO remove and do the bean way
     PhoneAlertMapper INSTANCE = Mappers.getMapper( PhoneAlertMapper.class );
 
-    // TODO how to make full name better? can target be a getter?
     @Mapping(target="fullName", source=".")
     @Mapping(source="person.phone", target="phoneNumber")
     PhoneAlertDto personToPhoneAlertDto(Person person);

@@ -8,6 +8,7 @@ import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface CommunityEmailMapper {
+    // TODO remove, do the bean way
     CommunityEmailMapper INSTANCE = Mappers.getMapper(CommunityEmailMapper.class);
     CommunityEmailDto peopleToCommunityEmail(Person person);
 }

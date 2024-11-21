@@ -18,11 +18,11 @@ public class ControllerBeanTest {
     @Autowired
     private FloodController floodController;
     @Autowired
-    private PersonInfoController personInfoController;
+    private FireStatinController personInfoController;
     @Autowired
     private PhoneAlertController phoneAlertController;
     @Autowired
-    private StationController stationController;
+    private PersonInfoController stationController;
 
     @Test
     void contextLoads() {
