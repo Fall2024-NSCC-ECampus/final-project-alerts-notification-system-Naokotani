@@ -1,6 +1,6 @@
 package com.example.alerts.controller;
 
-import com.example.alerts.dto.person_info.FireStationDto;
+import com.example.alerts.dto.fire_station.FireStationDto;
 import com.example.alerts.exception.ResourceNotFound;
 import com.example.alerts.model.Person;
 import com.example.alerts.repository.PersonRepository;

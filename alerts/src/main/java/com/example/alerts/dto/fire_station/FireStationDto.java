@@ -1,4 +1,4 @@
-package com.example.alerts.dto.person_info;
+package com.example.alerts.dto.fire_station;
 
 import lombok.Data;
 

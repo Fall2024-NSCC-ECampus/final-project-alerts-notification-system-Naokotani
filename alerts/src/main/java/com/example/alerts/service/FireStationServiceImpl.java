@@ -1,7 +1,7 @@
 package com.example.alerts.service;
 
-import com.example.alerts.dto.person_info.FireStationDto;
-import com.example.alerts.dto.person_info.FireStationPersonDto;
+import com.example.alerts.dto.fire_station.FireStationDto;
+import com.example.alerts.dto.fire_station.FireStationPersonDto;
 import com.example.alerts.exception.ResourceNotFound;
 import com.example.alerts.mapper.FireStationMapper;
 import com.example.alerts.model.Person;

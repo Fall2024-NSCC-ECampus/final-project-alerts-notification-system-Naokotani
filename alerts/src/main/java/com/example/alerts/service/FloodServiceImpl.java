@@ -41,7 +41,7 @@ public class FloodServiceImpl implements FloodService {
                 .map(address -> {
                     List<Person> people = personRepository.findPersonByAddress(address);
                     return floodMapper.peopleToFloodDto(
-                            address.toString(),
+                            address,
                             people.stream()
                                     .map(floodMapper::persontoFloodPersonDto)
                                     .collect(Collectors.toList())
