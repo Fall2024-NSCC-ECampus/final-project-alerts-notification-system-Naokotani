@@ -2,7 +2,7 @@ package com.example.alerts.controller;
 
 import com.example.alerts.dto.person_info.PersonInfoDto;
 import com.example.alerts.dto.person_info.PersonInfoPersonDto;
-import com.example.alerts.mapper.PersonInfoMapper;
+import com.example.alerts.mapper.FireStationMapper;
 import com.example.alerts.model.Person;
 import com.example.alerts.repository.PersonRepository;
 import org.springframework.http.HttpStatus;
@@ -25,8 +25,10 @@ import java.util.List;
 public class FireStatinController {
 
     private final PersonRepository personRepository;
-    public FireStatinController(PersonRepository personRepository) {
+    private final FireStationMapper fireStationMapper;
+    public FireStatinController(PersonRepository personRepository, FireStationMapper fireStationMapper) {
         this.personRepository = personRepository;
+        this.fireStationMapper = fireStationMapper;
     }
 
     /**
@@ -52,9 +54,9 @@ public class FireStatinController {
         long adults = people.stream().filter(p -> p.getAge() >= 18).count();
         long children = people.stream().filter(p -> p.getAge() < 18).count();
         List<PersonInfoPersonDto> personInfoPersonDto = people.stream()
-                .map(p -> PersonInfoMapper.INSTANCE.personToPersonAddressDto(p, p.getAddress().toString())).toList();
+                .map(p -> fireStationMapper.personToPersonAddressDto(p, p.getAddress().toString())).toList();
         PersonInfoDto personInfoDto
-                = PersonInfoMapper.INSTANCE.peopleToPersonInfoDto(personInfoPersonDto, children, adults);
+                = fireStationMapper.peopleToPersonInfoDto(personInfoPersonDto, children, adults);
         return new ResponseEntity<>(personInfoDto, HttpStatus.OK);
     }
 }

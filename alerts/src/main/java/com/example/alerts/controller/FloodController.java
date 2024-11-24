@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,10 +31,12 @@ import java.util.stream.Collectors;
 public class FloodController {
     private final AddressRepository addressRepository;
     private final PersonRepository personRepository;
+    private final FloodMapper floodMapper;
 
-    public FloodController(AddressRepository addressRepository, PersonRepository personRepository) {
+    public FloodController(AddressRepository addressRepository, PersonRepository personRepository, FloodMapper floodMapper) {
         this.addressRepository = addressRepository;
         this.personRepository = personRepository;
+        this.floodMapper = floodMapper;
     }
 
     @GetMapping
@@ -49,7 +50,7 @@ public class FloodController {
                     return FloodMapper.INSTANCE.peopleToFloodDto(
                             address.toString(),
                             people.stream()
-                                    .map(FloodMapper.INSTANCE::persontoFloodPersonDto)
+                                    .map(floodMapper::persontoFloodPersonDto)
                                     .collect(Collectors.toList())
                     );
                 }).toList();

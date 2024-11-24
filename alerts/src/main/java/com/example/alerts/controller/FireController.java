@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -27,6 +26,7 @@ import java.util.List;
 public class FireController {
     private final AddressRepository addressRepository;
     private final PersonRepository personRepository;
+    private final FireMapper fireMapper;
 
     public FireController(AddressRepository addressRepository, PersonRepository personRepository) {
         this.addressRepository = addressRepository;
@@ -48,7 +48,7 @@ public class FireController {
                 .orElseThrow(() -> new ResourceNotFound("Address not found"));
         List<Person> people = personRepository.findPersonByAddress(address);
         List<FireDto> fireDtos =
-                people.stream().map(p -> FireMapper.INSTANCE.personToFireDto(p,
+                people.stream().map(p -> fireMapper.personToFireDto(p,
                         p.getFirstName() + " " + p.getLastName(),
                         p.getAddress().toString())).toList();
         return new ResponseEntity<>(fireDtos, HttpStatus.OK);

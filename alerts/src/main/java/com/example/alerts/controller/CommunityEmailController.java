@@ -24,9 +24,11 @@ import java.util.List;
 @RequestMapping("/communityEmail")
 public class CommunityEmailController {
     private final PersonRepository personRepository;
+    private final CommunityEmailMapper communityEmailMapper;
 
-    public CommunityEmailController(PersonRepository personRepository) {
+    public CommunityEmailController(PersonRepository personRepository, CommunityEmailMapper communityEmailMapper) {
         this.personRepository = personRepository;
+        this.communityEmailMapper = communityEmailMapper;
     }
 
     @GetMapping
@@ -36,7 +38,7 @@ public class CommunityEmailController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         List<CommunityEmailDto> communityEmailDtos = people.stream()
-                .map(CommunityEmailMapper.INSTANCE::peopleToCommunityEmail).toList();
+                .map(communityEmailMapper::peopleToCommunityEmail).toList();
         return new ResponseEntity<>(communityEmailDtos, HttpStatus.OK);
     }
 
