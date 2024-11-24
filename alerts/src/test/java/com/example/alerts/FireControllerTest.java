@@ -104,7 +104,7 @@ public class FireControllerTest {
      * @throws Exception throws database exceptions
      */
     @Test
-    void personController() throws Exception {
+    void fireController() throws Exception {
         List<FireStation> fireStations = fireStationRepository.findAll();
         ResultActions result;
         if(!fireStations.isEmpty()){

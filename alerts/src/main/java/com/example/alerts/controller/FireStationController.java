@@ -1,10 +1,10 @@
 package com.example.alerts.controller;
 
-import com.example.alerts.dto.person_info.PersonInfoDto;
-import com.example.alerts.dto.person_info.PersonInfoPersonDto;
-import com.example.alerts.mapper.FireStationMapper;
+import com.example.alerts.dto.person_info.FireStationDto;
+import com.example.alerts.exception.ResourceNotFound;
 import com.example.alerts.model.Person;
 import com.example.alerts.repository.PersonRepository;
+import com.example.alerts.service.FireStationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,13 +22,12 @@ import java.util.List;
 */
 @RestController
 @RequestMapping("/firestation")
-public class FireStatinController {
-
+public class FireStationController {
+    private final FireStationService fireStationService;
     private final PersonRepository personRepository;
-    private final FireStationMapper fireStationMapper;
-    public FireStatinController(PersonRepository personRepository, FireStationMapper fireStationMapper) {
+    public FireStationController(FireStationService fireStationService, PersonRepository personRepository) {
+        this.fireStationService = fireStationService;
         this.personRepository = personRepository;
-        this.fireStationMapper = fireStationMapper;
     }
 
     /**
@@ -41,22 +40,16 @@ public class FireStatinController {
         return new ResponseEntity<>(people, HttpStatus.OK);
     }
 
-    // TODO Refactor to service
-    // TODO correct query name?
     /**
      * Returns the list of people serviced by a fire station.
      * @param stationNumber The id of the fire station to return a list of people for.
      * @return A list of {@link Person}
      */
-    @GetMapping()
-    public ResponseEntity<PersonInfoDto> getPeopleByFireStation(@RequestParam Long stationNumber) {
-        List<Person> people = personRepository.findPersonByFireStationId(stationNumber);
-        long adults = people.stream().filter(p -> p.getAge() >= 18).count();
-        long children = people.stream().filter(p -> p.getAge() < 18).count();
-        List<PersonInfoPersonDto> personInfoPersonDto = people.stream()
-                .map(p -> fireStationMapper.personToPersonAddressDto(p, p.getAddress().toString())).toList();
-        PersonInfoDto personInfoDto
-                = fireStationMapper.peopleToPersonInfoDto(personInfoPersonDto, children, adults);
-        return new ResponseEntity<>(personInfoDto, HttpStatus.OK);
+    @GetMapping
+    public ResponseEntity<FireStationDto> getPeopleByFireStation(@RequestParam Long stationNumber)
+        throws ResourceNotFound
+    {
+        FireStationDto fireStationDto = fireStationService.getPeopleByFirestation(stationNumber);
+        return new ResponseEntity<>(fireStationDto, HttpStatus.OK);
     }
 }

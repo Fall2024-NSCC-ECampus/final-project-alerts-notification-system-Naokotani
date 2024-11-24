@@ -1,18 +1,14 @@
 package com.example.alerts.controller;
 
+import com.example.alerts.dto.AddressDto;
 import com.example.alerts.dto.fire.FireDto;
 import com.example.alerts.exception.ResourceNotFound;
-import com.example.alerts.mapper.FireMapper;
 import com.example.alerts.model.Address;
-import com.example.alerts.model.Person;
 import com.example.alerts.repository.AddressRepository;
-import com.example.alerts.repository.PersonRepository;
+import com.example.alerts.service.FireService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,33 +21,18 @@ import java.util.List;
 @RequestMapping("/fire")
 public class FireController {
     private final AddressRepository addressRepository;
-    private final PersonRepository personRepository;
-    private final FireMapper fireMapper;
+    private final FireService fireService;
 
-    public FireController(AddressRepository addressRepository, PersonRepository personRepository) {
+    public FireController(AddressRepository addressRepository, FireService fireService) {
         this.addressRepository = addressRepository;
-        this.personRepository = personRepository;
+        this.fireService = fireService;
     }
 
-
     @GetMapping
-    public ResponseEntity<List<FireDto>> fire(
-            @RequestParam String streetNumber,
-            @RequestParam String street,
-            @RequestParam String city,
-            @RequestParam String province,
-            @RequestParam String postalCode
-    ) throws ResourceNotFound {
-        Address address
-                = addressRepository.findAddressBystreetNumberAndStreetAndCityAndProvinceAndPostalCode(
-                        streetNumber, street, city, province, postalCode)
-                .orElseThrow(() -> new ResourceNotFound("Address not found"));
-        List<Person> people = personRepository.findPersonByAddress(address);
-        List<FireDto> fireDtos =
-                people.stream().map(p -> fireMapper.personToFireDto(p,
-                        p.getFirstName() + " " + p.getLastName(),
-                        p.getAddress().toString())).toList();
-        return new ResponseEntity<>(fireDtos, HttpStatus.OK);
+    public ResponseEntity<List<FireDto>> fire(@ModelAttribute AddressDto addressDto)
+            throws ResourceNotFound {
+        List<FireDto> fireDto = fireService.getFireList(addressDto);
+        return new ResponseEntity<>(fireDto, HttpStatus.OK);
     }
 
 }

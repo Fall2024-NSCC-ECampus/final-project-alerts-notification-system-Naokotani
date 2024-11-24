@@ -18,7 +18,7 @@ public class ControllerBeanTest {
     @Autowired
     private FloodController floodController;
     @Autowired
-    private FireStatinController personInfoController;
+    private FireStationController personInfoController;
     @Autowired
     private PhoneAlertController phoneAlertController;
     @Autowired

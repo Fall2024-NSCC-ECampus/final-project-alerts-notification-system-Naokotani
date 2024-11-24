@@ -6,15 +6,11 @@ import com.example.alerts.model.Person;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
-import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface FloodMapper {
-    // TODO remove and do the bean way
-    FloodMapper INSTANCE = Mappers.getMapper(FloodMapper.class);
-
     default String fullNameMap(Person p) {
         return p.getFirstName() + " " + p.getLastName();
     }

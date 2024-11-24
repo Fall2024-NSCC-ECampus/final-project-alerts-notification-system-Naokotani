@@ -1,6 +1,7 @@
 package com.example.alerts.controller;
 
 import com.example.alerts.dto.community_email.CommunityEmailDto;
+import com.example.alerts.exception.ResourceNotFound;
 import com.example.alerts.mapper.CommunityEmailMapper;
 import com.example.alerts.model.Person;
 import com.example.alerts.repository.PersonRepository;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -32,11 +34,10 @@ public class CommunityEmailController {
     }
 
     @GetMapping
-    public ResponseEntity<List<CommunityEmailDto>> getEmailsByCity(@RequestParam String city) {
+    public ResponseEntity<List<CommunityEmailDto>> getEmailsByCity(@RequestParam String city)
+            throws ResponseStatusException
+    {
         List<Person> people =  personRepository.findPersonByCity(city);
-        if(people.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
         List<CommunityEmailDto> communityEmailDtos = people.stream()
                 .map(communityEmailMapper::peopleToCommunityEmail).toList();
         return new ResponseEntity<>(communityEmailDtos, HttpStatus.OK);

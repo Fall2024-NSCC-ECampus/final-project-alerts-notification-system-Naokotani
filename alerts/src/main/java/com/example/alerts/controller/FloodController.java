@@ -2,6 +2,7 @@ package com.example.alerts.controller;
 
 import com.example.alerts.dto.flood.FloodDto;
 import com.example.alerts.dto.flood.FloodPersonDto;
+import com.example.alerts.exception.ResourceNotFound;
 import com.example.alerts.mapper.FloodMapper;
 import com.example.alerts.model.Address;
 import com.example.alerts.model.FireStation;
@@ -9,12 +10,14 @@ import com.example.alerts.model.Person;
 import com.example.alerts.repository.AddressRepository;
 import com.example.alerts.repository.FireStationRepository;
 import com.example.alerts.repository.PersonRepository;
+import com.example.alerts.service.FloodService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,31 +32,14 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/flood")
 public class FloodController {
-    private final AddressRepository addressRepository;
-    private final PersonRepository personRepository;
-    private final FloodMapper floodMapper;
-
-    public FloodController(AddressRepository addressRepository, PersonRepository personRepository, FloodMapper floodMapper) {
-        this.addressRepository = addressRepository;
-        this.personRepository = personRepository;
-        this.floodMapper = floodMapper;
+    private final FloodService floodService;
+    public FloodController(FloodService floodService) {
+        this.floodService = floodService;
     }
 
     @GetMapping
     public ResponseEntity<List<FloodDto>> getFloodHouseholds(@RequestParam List<Long> stations) {
-        // TODO 404?
-        List<Address> addresses = stations.stream()
-                .flatMap(s-> addressRepository.findAddressByStation(s).stream()).toList();
-        List<FloodDto> floodDtos = addresses.stream()
-                .map(address -> {
-                    List<Person> people = personRepository.findPersonByAddress(address);
-                    return FloodMapper.INSTANCE.peopleToFloodDto(
-                            address.toString(),
-                            people.stream()
-                                    .map(floodMapper::persontoFloodPersonDto)
-                                    .collect(Collectors.toList())
-                    );
-                }).toList();
-        return new ResponseEntity<>(floodDtos, HttpStatus.OK);
+        List<FloodDto> floodDto = floodService.getFloodHouseholds(stations);
+        return new ResponseEntity<>(floodDto, HttpStatus.OK);
     }
 }
