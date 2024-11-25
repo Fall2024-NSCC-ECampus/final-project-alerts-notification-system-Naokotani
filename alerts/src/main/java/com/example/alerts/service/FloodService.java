@@ -1,9 +1,9 @@
 package com.example.alerts.service;
 
-import com.example.alerts.dto.flood.FloodDto;
+import com.example.alerts.dto.flood.DisasterDto;
 
 import java.util.List;
 
 public interface FloodService {
-    List<FloodDto> getFloodHouseholds(List<Long> stationIds);
+    List<DisasterDto> getFloodHouseholds(List<Long> stationIds);
 }

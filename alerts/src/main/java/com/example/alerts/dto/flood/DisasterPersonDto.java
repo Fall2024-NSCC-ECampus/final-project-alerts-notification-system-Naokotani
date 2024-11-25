@@ -7,7 +7,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class FloodPersonDto {
+public class DisasterPersonDto {
     private String fullName;
     private String phoneNumber;
     private int age;

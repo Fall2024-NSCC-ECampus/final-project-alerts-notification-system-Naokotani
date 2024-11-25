@@ -9,10 +9,4 @@ public class FireStationDto {
     private List<FireStationPersonDto> people;
     private long numberOfChildren;
     private long numberOfAdults;
-
-    public FireStationDto(List<FireStationPersonDto> people, long numberOfChildren, long numberOfAdults) {
-        this.people = people;
-        this.numberOfChildren = numberOfChildren;
-        this.numberOfAdults = numberOfAdults;
-    }
 }

@@ -1,6 +1,6 @@
 package com.example.alerts.controller;
 
-import com.example.alerts.dto.flood.FloodDto;
+import com.example.alerts.dto.flood.DisasterDto;
 import com.example.alerts.service.FloodService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,8 +27,8 @@ public class FloodController {
     }
 
     @GetMapping
-    public ResponseEntity<List<FloodDto>> getFloodHouseholds(@RequestParam List<Long> stations) {
-        List<FloodDto> floodDto = floodService.getFloodHouseholds(stations);
-        return new ResponseEntity<>(floodDto, HttpStatus.OK);
+    public ResponseEntity<List<DisasterDto>> getFloodHouseholds(@RequestParam List<Long> stations) {
+        List<DisasterDto> disasterDto = floodService.getFloodHouseholds(stations);
+        return new ResponseEntity<>(disasterDto, HttpStatus.OK);
     }
 }

@@ -1,7 +1,7 @@
 package com.example.alerts.mapper;
 
-import com.example.alerts.dto.flood.FloodDto;
-import com.example.alerts.dto.flood.FloodPersonDto;
+import com.example.alerts.dto.flood.DisasterDto;
+import com.example.alerts.dto.flood.DisasterPersonDto;
 import com.example.alerts.model.Address;
 import com.example.alerts.model.Person;
 import org.mapstruct.Mapper;
@@ -17,11 +17,11 @@ public interface FloodMapper {
     @Mapping(source="person.allergy", target="allergies")
     @Mapping(source="person", qualifiedByName = "getFullName", target="fullName")
     @Mapping(source="person.phone", target="phoneNumber")
-    FloodPersonDto persontoFloodPersonDto(Person person);
+    DisasterPersonDto persontoFloodPersonDto(Person person);
 
     @Mapping(source="address", qualifiedByName = "getFullAddress", target="fullAddress")
     @Mapping(source="people", target="household")
-    FloodDto peopleToFloodDto(Address address, List<FloodPersonDto> people);
+    DisasterDto peopleToFloodDto(Address address, List<DisasterPersonDto> people);
 
     @Named("getFullName")
     default String getFullName(Person p) {

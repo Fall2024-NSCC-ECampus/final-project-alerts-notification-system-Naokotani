@@ -1,6 +1,6 @@
 package com.example.alerts.controller;
 
-import com.example.alerts.dto.phone_alert.PhoneAlertDto;
+import com.example.alerts.dto.PhoneDto;
 import com.example.alerts.mapper.PhoneAlertMapper;
 import com.example.alerts.model.Person;
 import com.example.alerts.repository.PersonRepository;
@@ -26,9 +26,9 @@ public class PhoneAlertController {
     }
 
     @GetMapping
-    public ResponseEntity<List<PhoneAlertDto>> getPhoneAlertNumbers(@RequestParam Long firestation){
+    public ResponseEntity<List<PhoneDto>> getPhoneAlertNumbers(@RequestParam Long firestation){
          List<Person> people = personRepository.findPersonByFireStationId(firestation);
-         List<PhoneAlertDto> phoneAlertDtos = people.stream().map(phoneAlertMapper::personToPhoneAlertDto).toList();
-         return ResponseEntity.ok(phoneAlertDtos);
+         List<PhoneDto> phoneDtos = people.stream().map(phoneAlertMapper::personToPhoneAlertDto).toList();
+         return ResponseEntity.ok(phoneDtos);
     }
 }
