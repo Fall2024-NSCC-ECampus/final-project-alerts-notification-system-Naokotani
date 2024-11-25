@@ -19,7 +19,7 @@ public interface PersonInfoMapper {
 
     @Named("getFullName")
     default String getFullName(Person p) {
-        return p.getFirstName() + " " + p.getLastName();
+        return FormatString.formatName(p);
     }
 
     @Named("getFullAddress")

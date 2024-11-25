@@ -117,11 +117,12 @@ public class FireControllerTest {
                     .param("postalCode", address.getPostalCode()));
             result.andExpect(status().isOk())
                     .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-                    .andExpect(jsonPath("$[0].fullName").value(FormatString.formatName(person)))
-                    .andExpect(jsonPath("$[0].phoneNumber").value(person.getPhone()))
-                    .andExpect(jsonPath("$[0].age").value(person.getAge()))
-                    .andExpect(jsonPath("$[0].medications[0].name").value(medication.getName()))
-                    .andExpect(jsonPath("$[0].allergies[0].name").value(allergy.getName()));
+                    .andExpect(jsonPath("$.people[0].name").value(FormatString.formatName(person)))
+                    .andExpect(jsonPath("$.stationId").value(fireStation.getId()))
+                    .andExpect(jsonPath("$.people[0].phoneNumber").value(person.getPhone()))
+                    .andExpect(jsonPath("$.people[0].age").value(person.getAge()))
+                    .andExpect(jsonPath("$.people[0].medications[0].name").value(medication.getName()))
+                    .andExpect(jsonPath("$.people[0].allergies[0].name").value(allergy.getName()));
         }
     }
 }

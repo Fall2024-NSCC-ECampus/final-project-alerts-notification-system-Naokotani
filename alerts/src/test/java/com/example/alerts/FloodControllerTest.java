@@ -167,7 +167,5 @@ public class FloodControllerTest {
                 .andExpect(jsonPath("$[1].household[0].allergies[0].name").value(allergy2.getName()))
                 .andExpect(jsonPath("$[1].household[0].medications[0].name").value(medication2.getName()))
                 .andExpect(jsonPath("$[1].household[0].medications[0].dosage").value(medication2.getDosage()));
-
-        ;
     }
 }

@@ -2,6 +2,7 @@ package com.example.alerts.service;
 
 import com.example.alerts.dto.AddressDto;
 import com.example.alerts.dto.fire.FireDto;
+import com.example.alerts.dto.fire.FirePersonDto;
 import com.example.alerts.exception.ResourceNotFound;
 import com.example.alerts.mapper.FireMapper;
 import com.example.alerts.model.Address;
@@ -37,11 +38,10 @@ public class FireServiceImpl implements FireService {
     }
 
     @Override
-    public List<FireDto> getFireList(AddressDto addressDto) {
+    public FireDto getFireList(AddressDto addressDto) {
         Address address = findAddress(addressDto);
         List<Person> people = personRepository.findPersonByAddress(address);
-        return people.stream().map(p -> fireMapper.personToFireDto(p,
-                p.getFirstName() + " " + p.getLastName(),
-                p.getAddress().toString())).toList();
+        List<FirePersonDto> peopleDto = people.stream().map(fireMapper::personToFirePersonDto).toList();
+        return fireMapper.peopleToFireDto(peopleDto, people.getFirst().getFireStation().getId());
     }
 }
