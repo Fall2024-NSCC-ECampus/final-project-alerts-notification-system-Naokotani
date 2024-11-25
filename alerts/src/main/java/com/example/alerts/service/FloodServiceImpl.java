@@ -1,6 +1,6 @@
 package com.example.alerts.service;
 
-import com.example.alerts.dto.flood.FloodDto;
+import com.example.alerts.dto.flood.DisasterDto;
 import com.example.alerts.exception.ResourceNotFound;
 import com.example.alerts.mapper.FloodMapper;
 import com.example.alerts.model.Address;
@@ -37,7 +37,7 @@ public class FloodServiceImpl implements FloodService {
     }
 
     @Override
-    public List<FloodDto> getFloodHouseholds(List<Long> stationIds) {
+    public List<DisasterDto> getFloodHouseholds(List<Long> stationIds) {
         List<Address> addresses = findAddresses(stationIds);
         return addresses.stream()
                 .map(address -> {

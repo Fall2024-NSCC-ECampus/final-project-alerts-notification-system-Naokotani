@@ -1,9 +1,9 @@
-package com.example.alerts.dto.phone_alert;
+package com.example.alerts.dto;
 
 import lombok.Data;
 
 @Data
-public class PhoneAlertDto {
+public class PhoneDto {
     private String fullName;
     private String phoneNumber;
 }

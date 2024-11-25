@@ -1,7 +1,6 @@
 package com.example.alerts.controller;
 
-import com.example.alerts.dto.community_email.CommunityEmailDto;
-import com.example.alerts.exception.ResourceNotFound;
+import com.example.alerts.dto.EmailDto;
 import com.example.alerts.mapper.CommunityEmailMapper;
 import com.example.alerts.model.Person;
 import com.example.alerts.repository.PersonRepository;
@@ -34,13 +33,13 @@ public class CommunityEmailController {
     }
 
     @GetMapping
-    public ResponseEntity<List<CommunityEmailDto>> getEmailsByCity(@RequestParam String city)
+    public ResponseEntity<List<EmailDto>> getEmailsByCity(@RequestParam String city)
             throws ResponseStatusException
     {
         List<Person> people =  personRepository.findPersonByCity(city);
-        List<CommunityEmailDto> communityEmailDtos = people.stream()
+        List<EmailDto> emailDtos = people.stream()
                 .map(communityEmailMapper::peopleToCommunityEmail).toList();
-        return new ResponseEntity<>(communityEmailDtos, HttpStatus.OK);
+        return new ResponseEntity<>(emailDtos, HttpStatus.OK);
     }
 
 }

@@ -116,7 +116,7 @@ public class PersonInfoControllerTest {
                 .andExpect(jsonPath("$.email").value(person.getEmail()))
                 .andExpect(jsonPath("$.address").value(FormatString.formatAddress(address)))
                 .andExpect(jsonPath("$.age").value(person.getAge()))
-                .andExpect(jsonPath("$.medications[0].name").value(medication.getName()))
+                .andExpect(jsonPath("$.mediations[0].name").value(medication.getName()))
                 .andExpect(jsonPath("$.allergies[0].name").value(allergy.getName()));
     }
 
