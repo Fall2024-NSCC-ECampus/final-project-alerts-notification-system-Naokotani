@@ -1,5 +1,6 @@
 package com.example.alerts;
 
+import com.example.alerts.mapper.FormatString;
 import com.example.alerts.model.*;
 import com.example.alerts.repository.AddressRepository;
 import com.example.alerts.repository.FireStationRepository;
@@ -21,7 +22,7 @@ import java.util.Set;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@SpringBootTest
+@SpringBootTest(classes = AlertsApplication.class)
 @AutoConfigureMockMvc
 public class PersonInfoControllerTest {
     @Autowired
@@ -111,14 +112,19 @@ public class PersonInfoControllerTest {
 
         result.andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(jsonPath("$.name").value(person.getFirstName()
-                        + " " + person.getLastName()))
+                .andExpect(jsonPath("$.name").value(FormatString.formatName(person)))
                 .andExpect(jsonPath("$.email").value(person.getEmail()))
-                .andExpect(jsonPath("$.address").value(address.getStreetNumber() + " " +
-                        address.getStreet() + " " + address.getCity() + ", " +
-                        address.getProvince() + ", " + address.getPostalCode()))
+                .andExpect(jsonPath("$.address").value(FormatString.formatAddress(address)))
                 .andExpect(jsonPath("$.age").value(person.getAge()))
                 .andExpect(jsonPath("$.medications[0].name").value(medication.getName()))
                 .andExpect(jsonPath("$.allergies[0].name").value(allergy.getName()));
+    }
+
+    @Test
+    void personInfoNameNotFound() throws Exception {
+        ResultActions resultActions = mockMvc.perform(get("/personInfo")
+                .param("firstName", "Rober")
+                .param("lastName", "Clark"))
+                .andExpect(status().isNotFound());
     }
 }

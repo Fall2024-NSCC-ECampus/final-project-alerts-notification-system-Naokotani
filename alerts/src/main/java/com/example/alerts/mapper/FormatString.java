@@ -3,7 +3,7 @@ package com.example.alerts.mapper;
 import com.example.alerts.model.Address;
 import com.example.alerts.model.Person;
 
-public class FormatFields {
+public class FormatString {
     public static String formatAddress(Address a) {
         return a.getStreetNumber() + ' ' +
                 a.getStreet() + ' ' +

@@ -1,5 +1,6 @@
 package com.example.alerts;
 
+import com.example.alerts.mapper.FormatString;
 import com.example.alerts.model.*;
 import com.example.alerts.repository.AddressRepository;
 import com.example.alerts.repository.FireStationRepository;
@@ -21,7 +22,7 @@ import java.util.Set;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@SpringBootTest
+@SpringBootTest(classes = AlertsApplication.class)
 @AutoConfigureMockMvc
 public class FireControllerTest {
     @Autowired
@@ -116,8 +117,7 @@ public class FireControllerTest {
                     .param("postalCode", address.getPostalCode()));
             result.andExpect(status().isOk())
                     .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-                    .andExpect(jsonPath("$[0].fullName").value(person.getFirstName()
-                            + " " + person.getLastName()))
+                    .andExpect(jsonPath("$[0].fullName").value(FormatString.formatName(person)))
                     .andExpect(jsonPath("$[0].phoneNumber").value(person.getPhone()))
                     .andExpect(jsonPath("$[0].age").value(person.getAge()))
                     .andExpect(jsonPath("$[0].medications[0].name").value(medication.getName()))

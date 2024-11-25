@@ -24,7 +24,7 @@ public class FireStationServiceImpl implements FireStationService {
     }
 
     @Override
-    public FireStationDto getPeopleByFirestation(Long stationNumber)
+    public FireStationDto getPeopleByFireStation(Long stationNumber)
             throws ResourceNotFound
     {
         fireStationRepository.findById(stationNumber)
@@ -32,8 +32,8 @@ public class FireStationServiceImpl implements FireStationService {
         List<Person> people = personRepository.findPersonByFireStationId(stationNumber);
         long adults = people.stream().filter(p -> p.getAge() >= 18).count();
         long children = people.stream().filter(p -> p.getAge() < 18).count();
-        List<FireStationPersonDto> personInfoPersonDto = people.stream()
-                .map(p -> fireStationMapper.personToPersonAddressDto(p, p.getAddress().toString())).toList();
-        return fireStationMapper.peopleToPersonInfoDto(personInfoPersonDto, children, adults);
+        List<FireStationPersonDto> personDto = people.stream()
+                .map(fireStationMapper::personToFireStationPersonDto).toList();
+        return fireStationMapper.peopleToFireStationDto(personDto, children, adults);
     }
 }

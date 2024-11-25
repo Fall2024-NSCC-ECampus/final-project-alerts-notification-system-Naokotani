@@ -31,7 +31,6 @@ public class PersonInfoController {
         Person person = personRepository.findPersonByFirstNameAndLastName(personInfoRequest.getFirstName(),
                         personInfoRequest.getLastName())
                 .orElseThrow(() -> new ResourceNotFound("Person not found"));
-        PersonInfoDto personInfoDto = personInfoMapper.personToPersonInfoDto(person);
-        return new ResponseEntity<>(personInfoDto, HttpStatus.OK);
+        return new ResponseEntity<>(personInfoMapper.personToPersonInfoDto(person), HttpStatus.OK);
     }
 }

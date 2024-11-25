@@ -1,5 +1,6 @@
 package com.example.alerts.service;
 
+import com.example.alerts.dto.AddressDto;
 import com.example.alerts.dto.child_alert.ChildAlertDto;
 import com.example.alerts.exception.ResourceNotFound;
 import com.example.alerts.mapper.ChildAlertMapper;
@@ -17,7 +18,9 @@ public class ChildAlertServiceImpl implements ChildAlertService {
     private final PersonRepository personRepository;
     private final ChildAlertMapper childAlertMapper;
 
-    public ChildAlertServiceImpl(AddressRepository addressRepository, PersonRepository personRepository, ChildAlertMapper childAlertMapper) {
+    public ChildAlertServiceImpl(AddressRepository addressRepository,
+                                 PersonRepository personRepository,
+                                 ChildAlertMapper childAlertMapper) {
         this.addressRepository = addressRepository;
         this.personRepository = personRepository;
         this.childAlertMapper = childAlertMapper;
@@ -26,18 +29,17 @@ public class ChildAlertServiceImpl implements ChildAlertService {
     private boolean checkAge(Person p){
         return p.getAge() >= 18;
     }
+
     @Override
-    public ChildAlertDto getChildAlert(String streetNumber, String street,
-                                       String city, String province, String postalCode)
-            throws ResourceNotFound {
+    public ChildAlertDto getChildAlert(AddressDto addressDto) throws ResourceNotFound {
 
         Address address = addressRepository
                 .findAddressBystreetNumberAndStreetAndCityAndProvinceAndPostalCode(
-                        streetNumber,
-                        street,
-                        city,
-                        province,
-                        postalCode )
+                        addressDto.getStreetNumber(),
+                        addressDto.getStreet(),
+                        addressDto.getCity(),
+                        addressDto.getProvince(),
+                        addressDto.getPostalCode())
                 .orElseThrow(() -> new ResourceNotFound("Address not found"));
 
         List<Person> people = personRepository.findPersonByAddress(address);

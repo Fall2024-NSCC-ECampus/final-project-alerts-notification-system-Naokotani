@@ -18,7 +18,9 @@ public class FloodServiceImpl implements FloodService {
     private final AddressRepository addressRepository;
     private final FloodMapper floodMapper;
 
-    public FloodServiceImpl(PersonRepository personRepository, AddressRepository addressRepository, FloodMapper floodMapper) {
+    public FloodServiceImpl(PersonRepository personRepository,
+                            AddressRepository addressRepository,
+                            FloodMapper floodMapper) {
         this.personRepository = personRepository;
         this.addressRepository = addressRepository;
         this.floodMapper = floodMapper;

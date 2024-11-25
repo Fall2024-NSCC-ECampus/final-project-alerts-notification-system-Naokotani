@@ -1,5 +1,6 @@
 package com.example.alerts;
 
+import com.example.alerts.mapper.FormatString;
 import com.example.alerts.model.*;
 import com.example.alerts.repository.AddressRepository;
 import com.example.alerts.repository.FireStationRepository;
@@ -20,7 +21,7 @@ import java.util.Set;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@SpringBootTest
+@SpringBootTest(classes = AlertsApplication.class)
 @AutoConfigureMockMvc
 public class PhoneAlertControllerTest {
     @Autowired
@@ -91,7 +92,6 @@ public class PhoneAlertControllerTest {
         personRepository.save(person);
     }
 
-    // TODO few more test
     /**
      * Test the actual api path.
      * @throws Exception throws database exceptions
@@ -103,7 +103,7 @@ public class PhoneAlertControllerTest {
         if(!fireStations.isEmpty()){
             result = mockMvc.perform(get(String.format("/phoneAlert?firestation=%s", fireStations.getFirst().getId())));
             result.andExpect(status().isOk())
-                    .andExpect(jsonPath("$[0].fullName").value(person.getFirstName() + " " + person.getLastName()))
+                    .andExpect(jsonPath("$[0].fullName").value(FormatString.formatName(person)))
                     .andExpect(jsonPath("$[0].phoneNumber").value(person.getPhone()));
         }
     }

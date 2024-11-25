@@ -25,14 +25,4 @@ public class Address {
     private String postalCode;
     @OneToMany(fetch = FetchType.EAGER)
     private Set<Person> person = new HashSet<>();
-
-    // TODO this is a bit of a hack.
-    @Override
-    public String toString() {
-        return streetNumber + ' ' +
-                street + ' ' +
-                city + ", " +
-                province + ", " +
-                postalCode;
-    }
 }

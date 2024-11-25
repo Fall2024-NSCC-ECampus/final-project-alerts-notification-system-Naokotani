@@ -20,12 +20,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/fire")
 public class FireController {
-    private final AddressRepository addressRepository;
     private final FireService fireService;
 
-    public FireController(AddressRepository addressRepository, FireService fireService) {
-        this.addressRepository = addressRepository;
-        this.fireService = fireService;
+    public FireController(FireService fireService) {
+            this.fireService = fireService;
     }
 
     @GetMapping

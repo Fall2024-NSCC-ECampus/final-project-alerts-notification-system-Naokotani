@@ -1,15 +1,6 @@
 package com.example.alerts.controller;
 
 import com.example.alerts.dto.flood.FloodDto;
-import com.example.alerts.dto.flood.FloodPersonDto;
-import com.example.alerts.exception.ResourceNotFound;
-import com.example.alerts.mapper.FloodMapper;
-import com.example.alerts.model.Address;
-import com.example.alerts.model.FireStation;
-import com.example.alerts.model.Person;
-import com.example.alerts.repository.AddressRepository;
-import com.example.alerts.repository.FireStationRepository;
-import com.example.alerts.repository.PersonRepository;
 import com.example.alerts.service.FloodService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

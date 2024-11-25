@@ -18,7 +18,9 @@ public class FireServiceImpl implements FireService {
     private final FireMapper fireMapper;
     private final AddressRepository addressRepository;
 
-    public FireServiceImpl(PersonRepository personRepository, FireMapper fireMapper, AddressRepository addressRepository) {
+    public FireServiceImpl(PersonRepository personRepository,
+                           FireMapper fireMapper,
+                           AddressRepository addressRepository) {
         this.personRepository = personRepository;
         this.fireMapper = fireMapper;
         this.addressRepository = addressRepository;

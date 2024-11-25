@@ -16,12 +16,12 @@ public interface FloodMapper {
 
     @Named("getFullName")
     default String getFullName(Person p) {
-        return FormatFields.formatName(p);
+        return FormatString.formatName(p);
     }
 
     @Named("getFullAddress")
     default String getFullAddress(Address a) {
-        return FormatFields.formatAddress(a);
+        return FormatString.formatAddress(a);
     }
     @Mapping(source="person.medication", target="medications")
     @Mapping(source="person.allergy", target="allergies")

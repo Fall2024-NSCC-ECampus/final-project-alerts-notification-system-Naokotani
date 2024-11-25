@@ -13,7 +13,7 @@ public interface PersonInfoMapper {
 
     @Mapping(source="person.allergy", target="allergies")
     @Mapping(source="person.medication", target="medications")
-    @Mapping(source="person", qualifiedByName = "getFullAddress", target="address")
+    @Mapping(source="person.address", qualifiedByName = "getFullAddress", target="address")
     @Mapping(source="person", qualifiedByName="getFullName", target="name")
     PersonInfoDto personToPersonInfoDto(Person person);
 
@@ -23,12 +23,7 @@ public interface PersonInfoMapper {
     }
 
     @Named("getFullAddress")
-    default String getFullAddress(Person p) {
-        Address address = p.getAddress();
-        return address.getStreetNumber() + " " +
-                address.getStreet() + " " +
-                address.getCity() + ", " +
-                address.getProvince() + ", "
-                + address.getPostalCode();
+    default String getFullAddress(Address a) {
+        return FormatString.formatAddress(a);
     }
 }

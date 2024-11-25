@@ -1,5 +1,6 @@
 package com.example.alerts;
 
+import com.example.alerts.mapper.FormatString;
 import com.example.alerts.model.*;
 import com.example.alerts.repository.AddressRepository;
 import com.example.alerts.repository.FireStationRepository;
@@ -20,7 +21,7 @@ import java.util.Set;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@SpringBootTest
+@SpringBootTest(classes = AlertsApplication.class)
 @AutoConfigureMockMvc
 public class StationControllerTest {
     @Autowired
@@ -96,7 +97,7 @@ public class StationControllerTest {
      * @throws Exception Not sure. Maybe if there is an exception in the controller?
      */
     @Test
-    void personControllerTest() throws Exception {
+    void stationControllerTest() throws Exception {
         ResultActions result = mockMvc.perform(get("/firestation/test"));
         result.andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -130,7 +131,7 @@ public class StationControllerTest {
      * @throws Exception throws database exceptions
      */
     @Test
-    void personController() throws Exception {
+    void stationController() throws Exception {
         List<FireStation> fireStations = fireStationRepository.findAll();
         ResultActions result;
         if(!fireStations.isEmpty()){
@@ -139,9 +140,7 @@ public class StationControllerTest {
                     .andExpect(jsonPath("$.people[0].firstName").value(person.getFirstName()))
                     .andExpect(jsonPath("$.people[0].lastName").value(person.getLastName()))
                     .andExpect(jsonPath("$.people[0].phone").value(person.getPhone()))
-                    .andExpect(jsonPath("$.people[0].fullAddress").value(address.getStreetNumber() + " " +
-                            address.getStreet() + " " + address.getCity() + ", " + address.getProvince() + ", "
-                            + address.getPostalCode()))
+                    .andExpect(jsonPath("$.people[0].address").value(FormatString.formatAddress(address)))
                     .andExpect(jsonPath("$.numberOfChildren").value(0))
                     .andExpect(jsonPath("$.numberOfAdults").value(1));
         }

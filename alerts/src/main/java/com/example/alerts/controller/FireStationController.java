@@ -49,7 +49,7 @@ public class FireStationController {
     public ResponseEntity<FireStationDto> getPeopleByFireStation(@RequestParam Long stationNumber)
         throws ResourceNotFound
     {
-        FireStationDto fireStationDto = fireStationService.getPeopleByFirestation(stationNumber);
+        FireStationDto fireStationDto = fireStationService.getPeopleByFireStation(stationNumber);
         return new ResponseEntity<>(fireStationDto, HttpStatus.OK);
     }
 }
